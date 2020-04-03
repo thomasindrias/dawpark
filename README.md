@@ -15,3 +15,6 @@ The application is meant to be used as a quality of life "tool/service" that dep
 ##### Hosts (can still change)
 Frontend will be hosted on [Netlify](https://www.netlify.com/)
 Backend will be hosted on [DigitalOcean](https://www.digitalocean.com/)
+
+###### Data
+All the data to power this application will be acquired from the [Trafikverket API](https://api.trafikinfo.trafikverket.se/API)
