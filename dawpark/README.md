@@ -1,5 +1,7 @@
 # dawpark
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b9644d6f-2a39-4508-bdbf-89e3e5ae216e/deploy-status)](https://app.netlify.com/sites/hopeful-newton-3e4cd7/deploys)
+
 ## Project setup
 ```
 yarn install
