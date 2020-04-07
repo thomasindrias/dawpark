@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
 
+import { getParkings } from "./fetcher/trafikverket";
+
 const app = express();
 
 // Setup middlewares
@@ -11,7 +13,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (_, res: Response) => {
-  res.send("Dawpark!");
+  getParkings();
 });
 
 app.listen(3000, () => {

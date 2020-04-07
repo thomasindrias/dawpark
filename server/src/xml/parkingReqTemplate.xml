@@ -1,0 +1,11 @@
+<!--
+    Worth noting is that this is only a template. 
+    The proper XML file is stored within config folder with the appropriate API-key.
+    This is done to avoid having to use functions such as "replace" to insert API-key at "runtime" and suffering perfomance loss because of it.
+-->
+
+<REQUEST>
+    <LOGIN authenticationkey="{apikey}"/>
+    <QUERY objecttype="Parking" schemaversion="1.4" orderby="CountyNo asc">
+    </QUERY>
+</REQUEST>
