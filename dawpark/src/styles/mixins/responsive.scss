@@ -1,0 +1,90 @@
+/************************
+*** / MEDIA-QUERIES / ***
+************************/
+@mixin for-size($size) {
+  @if $size==xs {
+    @media (max-width: 599px) {
+      @content;
+    }
+  }
+
+  @else if $size==sm {
+    @media (min-width: 600px) {
+      @content;
+    }
+  }
+
+  @else if $size==md {
+    @media (min-width: 800px) {
+      @content;
+    }
+  }
+
+  @else if $size==lg {
+    @media (min-width: 1200px) {
+      @content;
+    }
+  }
+
+  @else if $size==xl {
+    @media (min-width: 1800px) {
+      @content;
+    }
+  }
+}
+
+.column-12 {
+  flex: 100%;
+}
+
+.header {
+  font-size: 42px;
+}
+
+.column-9 {
+  flex: 75%;
+}
+
+.column-8 {
+  flex: 67%;
+
+  @include for-size(xs) {
+    flex: 100%;
+  }
+
+  @include for-size(sm) {
+    flex: 100%;
+  }
+
+  @include for-size(md) {
+    flex: 67%;
+  }
+}
+
+.column-7 {
+  flex: 60%;
+}
+
+.column-6 {
+  flex: 50%;
+
+  @include for-size(xs) {
+    flex: 100%;
+  }
+
+  @include for-size(sm) {
+    flex: 100%;
+  }
+}
+
+.column-5 {
+  flex: 40%;
+}
+
+.column-4 {
+  flex: 33%;
+}
+
+.column-3 {
+  flex: 25%;
+}
