@@ -27,7 +27,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    $route(to, from) {
+    $route() {
       if (
         this.$store.state.windowSize === 'xs'
         || this.$store.state.windowSize === 'sm'
