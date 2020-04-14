@@ -1,27 +1,37 @@
-import { post } from "request";
+import axios from "axios";
 import fs from "fs";
 import path from "path";
 
-// import parkingXML from "../config/xml/parking.xml";
-
 /**
- *
+ * DOC
  */
-export function getParkings() {
+export async function getParkings() {
   const postBody = fs
     .readFileSync(path.resolve(__dirname, "../config/xml/parking.xml"))
     .toString();
 
-  const request = post(
-    {
-      url: "https://api.trafikinfo.trafikverket.se/v2/data.json",
-      body: postBody,
-      headers: {
-        "Content-Type": "text/xml",
-      },
+  /** Trafikverket requries either:
+   * == application/xml
+   * == text/xml
+   * == text/plain (triggar ingen CORS preflight, mer info finns här (https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Simple_requests).)
+   */
+  const tConfig = {
+    headers: {
+      "Content-Type": "text/plain",
     },
-    (error, response, body) => {
-      console.log(response);
-    }
-  );
+  };
+
+  const response: any = await axios
+    .post(
+      "https://api.trafikinfo.trafikverket.se/v2/data.json",
+      postBody,
+      tConfig
+    )
+    .catch((error) => {
+      console.log(error);
+    });
+
+  // Data contained in RESPONSE.RESULT
+  // @TODO: Write each object to the Parking class such that all objects are handled equally.
+  console.log(response.data.RESPONSE.RESULT);
 }
