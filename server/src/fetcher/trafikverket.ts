@@ -2,13 +2,15 @@ import axios from "axios";
 import fs from "fs";
 import path from "path";
 
+import { Parking } from "../entity/Parking";
+import { ParkingShaper } from "../classes/Parking";
+import { getConnection } from "typeorm";
+
 /**
  * DOC
  */
 export async function getParkings() {
-  const postBody = fs
-    .readFileSync(path.resolve(__dirname, "../config/xml/parking.xml"))
-    .toString();
+  const postBody = fs.readFileSync(path.resolve(__dirname, "../config/xml/parking.xml")).toString();
 
   /** Trafikverket requries either:
    * == application/xml
@@ -22,16 +24,24 @@ export async function getParkings() {
   };
 
   const response: any = await axios
-    .post(
-      "https://api.trafikinfo.trafikverket.se/v2/data.json",
-      postBody,
-      tConfig
-    )
+    .post("https://api.trafikinfo.trafikverket.se/v2/data.json", postBody, tConfig)
     .catch((error) => {
       console.log(error);
     });
 
   // Data contained in RESPONSE.RESULT
   // @TODO: Write each object to the Parking class such that all objects are handled equally.
-  console.log(response.data.RESPONSE.RESULT);
+
+  // For each parking cluster and parking within it.
+  let shapedParkings: Array<ParkingShaper> = [];
+  response.data.RESPONSE.RESULT.forEach((parkingCluster) => {
+    parkingCluster.Parking.forEach((parking) => {
+      //console.log(parking);
+      let shapedParking = new ParkingShaper(parking);
+      shapedParkings.push(shapedParking);
+    });
+  });
+
+  // Lets bulk insert.
+  await getConnection().createQueryBuilder().insert().into(Parking).values(shapedParkings).execute();
 }

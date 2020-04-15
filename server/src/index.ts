@@ -18,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (_, res: Response) => {
-  //getParkings();
+  getParkings();
 });
 
 createConnection().then(async (connection) => {
