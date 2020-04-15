@@ -1,8 +1,13 @@
 import express, { Response } from "express";
+import { createConnection } from "typeorm";
 import bodyParser from "body-parser";
 import helmet from "helmet";
 import cors from "cors";
 
+// Reflect metadata for typeorm/postgres
+import "reflect-metadata";
+
+// Custom imports
 import { getParkings } from "./fetcher/trafikverket";
 
 const app = express();
@@ -16,6 +21,8 @@ app.get("/", (_, res: Response) => {
   getParkings();
 });
 
-app.listen(3000, () => {
-  console.log("Listening on port 3000");
+createConnection().then(() => {
+  app.listen(3000, () => {
+    console.log("Listening on port 3000");
+  });
 });
