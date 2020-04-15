@@ -17,8 +17,9 @@ app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get("/", (_, res: Response) => {
-  getParkings();
+app.get("/", async (_, res: Response) => {
+  let status = await getParkings();
+  res.send(status);
 });
 
 createConnection().then(async (connection) => {

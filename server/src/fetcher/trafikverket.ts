@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { ResponseType, AxiosResponse } from "axios";
 import fs from "fs";
 import path from "path";
 
@@ -29,9 +29,6 @@ export async function getParkings() {
       console.log(error);
     });
 
-  // Data contained in RESPONSE.RESULT
-  // @TODO: Write each object to the Parking class such that all objects are handled equally.
-
   // For each parking cluster and parking within it.
   let shapedParkings: Array<ParkingShaper> = [];
   response.data.RESPONSE.RESULT.forEach((parkingCluster) => {
@@ -44,4 +41,6 @@ export async function getParkings() {
 
   // Lets bulk insert.
   await getConnection().createQueryBuilder().insert().into(Parking).values(shapedParkings).execute();
+
+  return response.data;
 }
