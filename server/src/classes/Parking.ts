@@ -48,7 +48,7 @@ export class ParkingShaper {
   //   photoURL: string;
 
   // Payment info
-  tariff_payment_fee: boolean = null;
+  tariff_payment_fee: boolean = false;
   tarif_payment_cost: string = null;
 
   usage_scenario: string[] = null;
@@ -91,8 +91,6 @@ export class ParkingShaper {
     };
     UsageScenario?: string[];
   }) {
-    console.log("Parking constructor");
-
     this.county_no = jsonParkingInfo.CountyNo;
     if ("Deleted" in jsonParkingInfo) this.deleted = jsonParkingInfo.Deleted;
 
