@@ -18,10 +18,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.get("/", (_, res: Response) => {
-  getParkings();
+  //getParkings();
 });
 
-createConnection().then(() => {
+createConnection().then(async (connection) => {
+  // If we need to run migrations, it is done before we start the server itself.
+  connection.runMigrations();
+
   app.listen(3000, () => {
     console.log("Listening on port 3000");
   });
