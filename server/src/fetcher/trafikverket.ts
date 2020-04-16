@@ -33,7 +33,6 @@ export async function getParkings() {
   let shapedParkings: Array<ParkingShaper> = [];
   response.data.RESPONSE.RESULT.forEach((parkingCluster) => {
     parkingCluster.Parking.forEach((parking) => {
-      //console.log(parking);
       let shapedParking = new ParkingShaper(parking);
       shapedParkings.push(shapedParking);
     });
@@ -41,6 +40,4 @@ export async function getParkings() {
 
   // Lets bulk insert.
   await getConnection().createQueryBuilder().insert().into(Parking).values(shapedParkings).execute();
-
-  return response.data;
 }
