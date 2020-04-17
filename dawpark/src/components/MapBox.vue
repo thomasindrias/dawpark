@@ -12,6 +12,10 @@
       <MglNavigationControl position="top-right" />
       <MglGeolocateControl position="top-right" />
       <MglScaleControl position="bottom-right"/>
+      <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
+      :coordinates="wktToWgs84(parking.wgs84)">
+        <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
+      </MglMarker>
     </MglMap>
   </div>
 </template>
@@ -22,9 +26,11 @@ import {
   MglNavigationControl,
   MglGeolocateControl,
   MglScaleControl,
+  MglMarker,
 } from 'vue-mapbox';
 
 import axios from 'axios';
+import parse from 'wellknown';
 
 export default {
   name: 'MapBox',
@@ -33,11 +39,13 @@ export default {
     MglNavigationControl,
     MglGeolocateControl,
     MglScaleControl,
+    MglMarker,
   },
   props: {
     accessToken: String,
     mapStyle: String,
     mapInput: String,
+    parkings: {},
   },
   data() {
     return {
@@ -49,6 +57,9 @@ export default {
     this.getIPLocation();
   },
   methods: {
+    wktToWgs84(wkt) {
+      return parse(wkt).coordinates;
+    },
     getIPLocation() {
       // Had to redirect twice because of cors.
       // Will probably remove the redirect when it's production ready.
@@ -80,6 +91,13 @@ export default {
     align-items: center;
     height: 100%;
     font-size: 4em;
+  }
+
+  .icon {
+    color: $green;
+    font-size: 28px;
+    -webkit-filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+    filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
   }
 
   // Loading animation inspired from https://tobiasahlin.com/spinkit/
