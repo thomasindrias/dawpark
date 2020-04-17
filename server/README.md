@@ -47,6 +47,7 @@ This returns data in the following format:
 ### Data processing
 
 - [x] Fill database with data
+- [x] Integrate PostGIS to enable geometrical/geolocation queries
 - [ ] Handle geometry using postgres queries
 
 ### API-Functionality
