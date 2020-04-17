@@ -20,7 +20,7 @@ export class ParkingShaper {
 
   // coordinates
   sweref: string;
-  wgs84: string;
+  wgs84: any;
 
   // icon
   icon_id: string;
@@ -97,7 +97,6 @@ export class ParkingShaper {
     this.description = jsonParkingInfo.Description;
     this.distance_to_nearest_city = jsonParkingInfo.DistanceToNearestCity;
     this.sweref = jsonParkingInfo.Geometry.SWEREF99TM;
-    this.wgs84 = jsonParkingInfo.Geometry.WGS84;
     this.icon_id = jsonParkingInfo.IconId;
     this.parking_id = jsonParkingInfo.Id;
     this.location_description;
@@ -123,5 +122,15 @@ export class ParkingShaper {
     }
 
     this.usage_scenario = jsonParkingInfo.UsageScenario;
+
+    // Parse our WKT into a GeoJSON object (https://geojson.org)
+    const lowerBound: number = jsonParkingInfo.Geometry.WGS84.indexOf("(");
+    const upperBound: number = jsonParkingInfo.Geometry.WGS84.indexOf(")");
+
+    // This makes POINT (17.9007816 59.5510025) => "17.9007816 59.5510025"
+    let coordinates: string = jsonParkingInfo.Geometry.WGS84.substr(lowerBound + 1, upperBound - lowerBound - 1);
+    const coordinatesLONG_LAT: string[] = coordinates.split(" ");
+
+    this.wgs84 = { type: "Point", coordinates: coordinatesLONG_LAT };
   }
 }

@@ -18,7 +18,7 @@ This returns data in the following format:
         description: string // Description of the parking in swedish
         distance_to_nearest_city: string // General description of how close the parking is to the nearest city in swedish
         sweref: string // Parking position as a geometric point in the SWEREF99TM coordinate system
-        wgs84: string // Parking position as a geometric point in the WGS84 coordinate system
+        wgs84: {type: string, coordinates: number[]} // Parking position as a geometric point. coordinates[0] = longitude, coordinates[1] = latitude.
         icon_id: string // Icon ID for the parking lot icon
         parking_id: string // The UNIQUE id for the parking lot
         location_description: string // General description of the location in swedish

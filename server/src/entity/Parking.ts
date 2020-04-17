@@ -32,11 +32,13 @@ export class Parking extends BaseEntity {
   @Column("text")
   sweref: string;
 
-  // This might have to change as WKT and String might not be the best storage solution for "offline distance queries"
-  // String conversion is known to be expensive => Might not fare well in optimized search algorithm (Graph?)
-  // @RESEARCH: Postgres Geometry
-  @Column("text")
-  wgs84: string;
+  @Column({
+    type: "geography",
+    nullable: true,
+    spatialFeatureType: "Point",
+    srid: 4326,
+  })
+  wgs84: any;
 
   @Column("text")
   icon_id: string;
