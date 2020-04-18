@@ -13,7 +13,7 @@
       <MglGeolocateControl position="top-right" />
       <MglScaleControl position="bottom-right"/>
       <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
-      :coordinates="wktToWgs84(parking.wgs84)">
+      :coordinates="parking.wgs84.coordinates">
         <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
       </MglMarker>
     </MglMap>
@@ -30,7 +30,6 @@ import {
 } from 'vue-mapbox';
 
 import axios from 'axios';
-import parse from 'wellknown';
 
 export default {
   name: 'MapBox',
@@ -57,9 +56,6 @@ export default {
     this.getIPLocation();
   },
   methods: {
-    wktToWgs84(wkt) {
-      return parse(wkt).coordinates;
-    },
     getIPLocation() {
       // Had to redirect twice because of cors.
       // Will probably remove the redirect when it's production ready.
@@ -78,7 +74,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .container {
     background-color: #ECE1CB;
     height: 100%;
