@@ -45,10 +45,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    placeholder: {
-      type: String,
-      default: 'Search',
-    },
     proximity: {
       type: Object,
       default: null,
@@ -88,6 +84,10 @@ export default {
     localGeocoder: {
       type: Function,
       default: null,
+    },
+    autocomplete: {
+      type: Boolean,
+      default: true,
     },
     // Component options
     input: {
