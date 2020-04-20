@@ -3,15 +3,20 @@
   <div class="content">
     <div class="row">
       <h1>
-      <span class="results">{{parkings.length}} Resultat </span>
-      <span class="results-place">i närheten av bergsbron</span>
+      <span class="results">{{ parkings.data.length }} Resultat </span>
+      <span class="results-place">
+        i närheten av
+        {{ (parkings.searchResult.text_sv) ? parkings.searchResult.text_sv : "Ingen platsnamn" }}
+        </span>
       </h1>
     </div>
     <hr>
-    <div class="row">filters</div>
+    <div class="row">
+      <filter-options :options="filters" @input="filterHandler"/>
+    </div>
     <div class="row results-wrapper">
       <park-element @click.native="parkDetails(parking)"
-      v-for="parking in parkings" :key="parking.parking_id"
+      v-for="parking in parkings.data" :key="parking.parking_id"
       :parkingInfo="parseParkingInfo(parking)" />
     </div>
   </div>
@@ -20,10 +25,12 @@
 
 <script>
 import ParkElement from '@/components/ParkElement.vue';
+import FilterOptions from '@/components/FilterOptions.vue';
 
 export default {
   components: {
     ParkElement,
+    FilterOptions,
   },
   props: {
     parkings: {},
@@ -35,9 +42,13 @@ export default {
         postnr: '641 53 Katrineholm',
         price: 'Gratis',
       },
+      filters: ['Filter 1', 'Filter 2', 'Filter 3'],
     };
   },
   methods: {
+    filterHandler(option) {
+      console.log(option);
+    },
     parkDetails(parkInfo) {
       // console.log(event);
     },

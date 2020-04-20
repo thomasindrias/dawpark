@@ -9,6 +9,16 @@
       :zoom="8"
       :attributionControl="false"
     >
+      <MglGeocoderControl
+        :accessToken="accessToken"
+        :input.sync="mapInput"
+        @result="handleSearch"
+        class="search"
+        position="top-left"
+        placeholder="Sök plats"
+        language="sv"
+        country="se"
+      />
       <MglNavigationControl position="top-right" />
       <MglGeolocateControl position="top-right" />
       <MglScaleControl position="bottom-right"/>
@@ -31,6 +41,8 @@ import {
 
 import axios from 'axios';
 
+import MglGeocoderControl from './GeocoderControl';
+
 export default {
   name: 'MapBox',
   components: {
@@ -39,11 +51,15 @@ export default {
     MglGeolocateControl,
     MglScaleControl,
     MglMarker,
+    MglGeocoderControl,
   },
   props: {
     accessToken: String,
     mapStyle: String,
-    mapInput: String,
+    mapInput: {
+      type: String,
+      default: '',
+    },
     parkings: {},
   },
   data() {
@@ -56,6 +72,9 @@ export default {
     this.getIPLocation();
   },
   methods: {
+    handleSearch(event) {
+      this.$emit('result', event.result);
+    },
     getIPLocation() {
       // Had to redirect twice because of cors.
       // Will probably remove the redirect when it's production ready.
