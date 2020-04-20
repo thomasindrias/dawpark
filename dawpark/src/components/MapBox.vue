@@ -97,29 +97,15 @@ export default {
   data() {
     return {
       lazyLoad: false,
-      mapCenter: [],
+      mapCenter: ['16.176372', '58.590318'],
     };
   },
-  created() {
-    this.getIPLocation();
+  mounted() {
+    this.lazyLoad = true;
   },
   methods: {
     handleSearch(event) {
       this.$emit('result', event.result);
-    },
-    getIPLocation() {
-      // Had to redirect twice because of cors.
-      // Will probably remove the redirect when it's production ready.
-      axios
-        .get('https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text')
-        .then((ipResponse) => axios.get(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=at_OwmMrq7nP5Mlyfamr64BosnLxfACT&ipAddress=${ipResponse.data}`))
-        .then((geoResponse) => {
-          this.mapCenter = [geoResponse.data.location.lng, geoResponse.data.location.lat];
-          this.lazyLoad = true;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   },
 };
