@@ -43,7 +43,7 @@ export default {
   methods: {
     searchHandler(result) {
       this.parkings.searchResult = result;
-      console.log(this.parkings.searchResult);
+      // console.log(this.parkings.searchResult);
     },
   },
 };
