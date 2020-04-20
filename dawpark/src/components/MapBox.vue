@@ -1,32 +1,60 @@
 <template>
   <div class="container">
     <div v-if="!lazyLoad" class="logo"><div class="spinner"></div></div>
-    <MglMap
-      v-if="lazyLoad"
-      :accessToken="accessToken"
-      :mapStyle.sync="mapStyle"
-      :center.sync="mapCenter"
-      :zoom="8"
-      :attributionControl="false"
-    >
-      <MglGeocoderControl
+    <div v-if="mobile && lazyLoad" class="container">
+      <MglMap
         :accessToken="accessToken"
-        :input.sync="mapInput"
-        @result="handleSearch"
-        class="search"
-        position="top-left"
-        placeholder="Sök plats"
-        language="sv"
-        country="se"
-      />
-      <MglNavigationControl position="top-right" />
-      <MglGeolocateControl position="top-right" />
-      <MglScaleControl position="bottom-right"/>
-      <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
-      :coordinates="parking.wgs84.coordinates">
-        <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
-      </MglMarker>
-    </MglMap>
+        :mapStyle.sync="mapStyle"
+        :center.sync="mapCenter"
+        :zoom="8"
+        :attributionControl="false"
+      >
+        <MglGeocoderControl
+          :accessToken="accessToken"
+          :input.sync="mapInput"
+          @result="handleSearch"
+          class="search"
+          position="top-left"
+          placeholder="Sök plats"
+          language="sv"
+          country="se"
+          :autocomplete="false"
+        />
+        <MglGeolocateControl position="bottom-left" />
+        <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
+        :coordinates="parking.wgs84.coordinates">
+          <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
+        </MglMarker>
+      </MglMap>
+    </div>
+    <div v-else-if="!mobile && lazyLoad" class="container">
+      <MglMap
+        :accessToken="accessToken"
+        :mapStyle.sync="mapStyle"
+        :center.sync="mapCenter"
+        :zoom="8"
+        :attributionControl="false"
+      >
+        <MglGeocoderControl
+          :accessToken="accessToken"
+          :input.sync="mapInput"
+          @result="handleSearch"
+          class="search"
+          position="top-left"
+          placeholder="Sök plats"
+          language="sv"
+          country="se"
+          :autocomplete="false"
+        />
+        <MglNavigationControl position="top-right" />
+        <MglGeolocateControl position="top-right" />
+        <MglScaleControl position="bottom-right"/>
+        <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
+        :coordinates="parking.wgs84.coordinates">
+          <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
+        </MglMarker>
+      </MglMap>
+    </div>
   </div>
 </template>
 
@@ -56,6 +84,10 @@ export default {
   props: {
     accessToken: String,
     mapStyle: String,
+    mobile: {
+      type: Boolean,
+      default: false,
+    },
     mapInput: {
       type: String,
       default: '',
