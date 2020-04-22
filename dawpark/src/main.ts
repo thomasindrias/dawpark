@@ -1,5 +1,5 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faMapMarker } from '@fortawesome/free-solid-svg-icons';
+import { faMapMarker, faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
 import App from './App.vue';
@@ -7,7 +7,7 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 
-library.add(faMapMarker);
+library.add(faMapMarker, faClock);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

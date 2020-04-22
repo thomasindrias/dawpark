@@ -1,5 +1,6 @@
 <template>
-  <map-box :accessToken="accessToken" :mapStyle="mapStyle" :parkings="parkings"></map-box>
+  <map-box :accessToken="accessToken" :mapStyle="mapStyle" :parkings="parkings.data"
+  :mobile="true"></map-box>
 </template>
 
 <script>
@@ -14,12 +15,15 @@ export default {
     return {
       accessToken: process.env.VUE_APP_MB_ACCESS_TOKEN,
       mapStyle: process.env.VUE_APP_MB_STYLE,
-      parkings: {},
+      parkings: {
+        searchResult: null,
+        data: null,
+      },
     };
   },
   mounted() {
     EventService.getAllParkings().then((response) => {
-      this.parkings = response.data;
+      this.parkings.data = response.data.slice(0, 10);
     })
       .catch((err) => {
         console.log(err);

@@ -1,22 +1,60 @@
 <template>
   <div class="container">
     <div v-if="!lazyLoad" class="logo"><div class="spinner"></div></div>
-    <MglMap
-      v-if="lazyLoad"
-      :accessToken="accessToken"
-      :mapStyle.sync="mapStyle"
-      :center.sync="mapCenter"
-      :zoom="8"
-      :attributionControl="false"
-    >
-      <MglNavigationControl position="top-right" />
-      <MglGeolocateControl position="top-right" />
-      <MglScaleControl position="bottom-right"/>
-      <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
-      :coordinates="wktToWgs84(parking.wgs84)">
-        <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
-      </MglMarker>
-    </MglMap>
+    <div v-if="mobile && lazyLoad" class="container">
+      <MglMap
+        :accessToken="accessToken"
+        :mapStyle.sync="mapStyle"
+        :center.sync="mapCenter"
+        :zoom="8"
+        :attributionControl="false"
+      >
+        <MglGeocoderControl
+          :accessToken="accessToken"
+          :input.sync="mapInput"
+          @result="handleSearch"
+          class="search"
+          position="top-left"
+          placeholder="Sök plats"
+          language="sv"
+          country="se"
+          :autocomplete="false"
+        />
+        <MglGeolocateControl position="bottom-left" />
+        <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
+        :coordinates="parking.wgs84.coordinates">
+          <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
+        </MglMarker>
+      </MglMap>
+    </div>
+    <div v-else-if="!mobile && lazyLoad" class="container">
+      <MglMap
+        :accessToken="accessToken"
+        :mapStyle.sync="mapStyle"
+        :center.sync="mapCenter"
+        :zoom="8"
+        :attributionControl="false"
+      >
+        <MglGeocoderControl
+          :accessToken="accessToken"
+          :input.sync="mapInput"
+          @result="handleSearch"
+          class="search"
+          position="top-left"
+          placeholder="Sök plats"
+          language="sv"
+          country="se"
+          :autocomplete="false"
+        />
+        <MglNavigationControl position="top-right" />
+        <MglGeolocateControl position="top-right" />
+        <MglScaleControl position="bottom-right"/>
+        <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
+        :coordinates="parking.wgs84.coordinates">
+          <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
+        </MglMarker>
+      </MglMap>
+    </div>
   </div>
 </template>
 
@@ -30,7 +68,8 @@ import {
 } from 'vue-mapbox';
 
 import axios from 'axios';
-import parse from 'wellknown';
+
+import MglGeocoderControl from './GeocoderControl';
 
 export default {
   name: 'MapBox',
@@ -40,45 +79,39 @@ export default {
     MglGeolocateControl,
     MglScaleControl,
     MglMarker,
+    MglGeocoderControl,
   },
   props: {
     accessToken: String,
     mapStyle: String,
-    mapInput: String,
+    mobile: {
+      type: Boolean,
+      default: false,
+    },
+    mapInput: {
+      type: String,
+      default: '',
+    },
     parkings: {},
   },
   data() {
     return {
       lazyLoad: false,
-      mapCenter: [],
+      mapCenter: ['16.176372', '58.590318'],
     };
   },
-  created() {
-    this.getIPLocation();
+  mounted() {
+    this.lazyLoad = true;
   },
   methods: {
-    wktToWgs84(wkt) {
-      return parse(wkt).coordinates;
-    },
-    getIPLocation() {
-      // Had to redirect twice because of cors.
-      // Will probably remove the redirect when it's production ready.
-      axios
-        .get('https://cors-anywhere.herokuapp.com/http://api.ipify.org/?format=text')
-        .then((ipResponse) => axios.get(`https://cors-anywhere.herokuapp.com/https://geo.ipify.org/api/v1?apiKey=at_OwmMrq7nP5Mlyfamr64BosnLxfACT&ipAddress=${ipResponse.data}`))
-        .then((geoResponse) => {
-          this.mapCenter = [geoResponse.data.location.lng, geoResponse.data.location.lat];
-          this.lazyLoad = true;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    handleSearch(event) {
+      this.$emit('result', event.result);
     },
   },
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .container {
     background-color: #ECE1CB;
     height: 100%;
