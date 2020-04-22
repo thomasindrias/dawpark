@@ -46,7 +46,7 @@ GET /parking/proximity
 
 with two parameters:
 
-```json
+```JSON
 {
   "coordinate": WKT, // "coordinate": "POINT(LONG, LAT)"
   "range": number // "range": 100 => 100 meters
