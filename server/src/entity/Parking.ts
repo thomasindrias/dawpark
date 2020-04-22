@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, PrimaryColumn } from "typeorm";
+import { Entity, Column, BaseEntity, PrimaryColumn, Index } from "typeorm";
 
 @Entity()
 export class Parking extends BaseEntity {
@@ -38,6 +38,7 @@ export class Parking extends BaseEntity {
     spatialFeatureType: "Point",
     srid: 4326,
   })
+  @Index()
   wgs84: any;
 
   @Column("text")
