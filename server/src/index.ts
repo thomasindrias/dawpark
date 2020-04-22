@@ -11,7 +11,7 @@ import { createPostgresConnection } from "./pgConnection";
 import { getParkings } from "./fetcher/trafikverket";
 
 // Routes
-import { getAllParkings } from "./routes/parkings";
+import { getAllParkings, getParkingsWithinRange } from "./routes/parkings";
 
 const app = express();
 
@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.get("/parkings", getAllParkings);
+app.get("/parking/proximity", getParkingsWithinRange);
 app.get("/", async (_, res: Response) => {
   res.send("Good, better, best. Never let it rest. 'Til your good is better and your better is best.");
 });
@@ -35,7 +36,7 @@ createPostgresConnection().then(async (connection) => {
 
   // We fetch fresh trafikverket data, for now using dropSchema on each restart
   // @TODO: Never use dropSchema in production :)))
-  await getParkings();
+  //await getParkings();
 
   // We start our server
   const port = process.env.PORT || 3000;

@@ -2,7 +2,7 @@
 
 ## Requests
 
-To get all the parkings that exist in the Trafikverket API simply run:
+### To get all the parkings that exist in the Trafikverket API simply run:
 
 ```http
 GET /parkings
@@ -37,6 +37,23 @@ This returns data in the following format:
     }
 ]
 ```
+
+### To get all the parkings within X meters from coordinate point y:
+
+```http
+GET /parking/proximity
+```
+
+with two parameters:
+
+```json
+{
+  "coordinate": WKT, // "coordinate": "POINT(LONG, LAT)"
+  "range": number // "range": 100 => 100 meters
+}
+```
+
+Reponse body is formatted the same way as GET /parkings
 
 ## Features
 
