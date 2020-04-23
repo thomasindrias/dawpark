@@ -55,6 +55,19 @@ with two parameters:
 
 Reponse body is formatted the same way as GET /parkings
 
+## Errors
+
+Errors returned from the server will always be returned in the following format (If an error does not, it is not yet a handled issue and will be delt with as development goes by):
+
+```JSON
+[
+  {
+    field: string,
+    message: string
+  }
+]
+```
+
 ## Features
 
 ### Data acquisition
@@ -65,12 +78,12 @@ Reponse body is formatted the same way as GET /parkings
 
 - [x] Fill database with data
 - [x] Integrate PostGIS to enable geometrical/geolocation queries
-- [ ] Handle geometry using postgres queries
+- [x] Handle geometry using postgres queries
 
 ### API-Functionality
 
 - [x] Return a mirror of the Trafikverket API but from our own database to minimize API-Key usage
-- [ ] Return parkings within a given radius
+- [x] Return parkings within a given radius
 - [ ] Return parkings fulfilling certain filter conditions
 
 ### API-Enchancements

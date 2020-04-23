@@ -17,13 +17,13 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
   const coordinates = req.query.coordinate; // => POINT(LONG, LAT)
   const range = req.query.range; // => Range in meters
 
-  console.log("Coordinates (WKT): " + coordinates);
-  console.log("Range (meters): " + range);
-
   try {
     await getParkingsWithinRangeSchema.validate({ coordinate: coordinates, range }, { abortEarly: false });
   } catch (err) {
-    formatError(err);
+    console.log("Coordinates (WKT): " + coordinates);
+    console.log("Range (meters): " + range);
+    console.log("==============================");
+    return res.send(formatError(err)).status(400);
   }
 
   // We need the entityManager in order to do some specia
@@ -31,6 +31,7 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
 
   let queryString = `SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')`;
   console.log("Query ===> " + queryString);
+  console.log("=================================");
 
   /* @TODO: SQL Injection problem as we don't verify the input properly.
    * POINT (LONG, LAT)
@@ -38,8 +39,12 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
    */
   const users = await em.query(`SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')`);
 
-  // @TODO: This is a naive solution to the problem. A proper SQL-query could do the same parsing without having to go through all the data again
-  // However, the number of parkings returned is generally a small N so the runtime impact is not major.
+  /*
+   * @TODO: This is a naive solution to the problem. A proper SQL-query could do the same parsing without having to go through all the data again
+   * However, the number of parkings returned is generally a small n so the runtime impact is not major.
+   *
+   * Time complexity O(n) where n is the number of returned parkings
+   */
   users.forEach((parking) => {
     parking.wgs84 = wkx.Geometry.parse(Buffer.from(parking.wgs84, "hex")).toGeoJSON();
   });
