@@ -36,7 +36,7 @@ export default {
 
       EventService.getProximityParking(
         parse.stringify(result.geometry),
-        1000,
+        20000,
       ).then((response) => {
         console.log(response.data);
         this.parkings.data = response.data;
