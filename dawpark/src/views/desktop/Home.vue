@@ -15,7 +15,6 @@ import MapBox from '@/components/MapBox.vue';
 import SidePage from '@/components/SidePage.vue';
 import Search from '@/components/Search.vue';
 import EventService from '@/services/EventService';
-import parse from 'wellknown';
 
 export default {
   components: {
@@ -38,7 +37,7 @@ export default {
       this.parkings.searchResult = result;
 
       EventService.getProximityParking(
-        parse.stringify(result.geometry),
+        result.coordinate,
         20000,
       ).then((response) => {
         console.log(response.data);

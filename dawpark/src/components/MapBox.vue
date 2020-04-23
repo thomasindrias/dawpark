@@ -12,7 +12,7 @@
         <MglGeocoderControl
           :accessToken="accessToken"
           :input.sync="mapInput"
-          @result="handleSearch"
+          @result="handleSearch($event, 1)"
           class="search"
           position="top-left"
           placeholder="Sök plats"
@@ -20,7 +20,10 @@
           country="se"
           :autocomplete="false"
         />
-        <MglGeolocateControl position="bottom-left" />
+        <MglGeolocateControl
+        position="bottom-left"
+        @geolocate="handleSearch($event, 2)"
+        />
         <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
         :coordinates="parking.wgs84.coordinates">
           <font-awesome-icon slot="marker" :icon="['fas', 'map-marker']" class="icon"/>
@@ -34,11 +37,12 @@
         :center.sync="mapCenter"
         :zoom="8"
         :attributionControl="false"
+        @load="onMapLoad"
       >
         <MglGeocoderControl
           :accessToken="accessToken"
           :input.sync="mapInput"
-          @result="handleSearch"
+          @result="handleSearch($event, 1)"
           class="search"
           position="top-left"
           placeholder="Sök plats"
@@ -47,7 +51,10 @@
           :autocomplete="false"
         />
         <MglNavigationControl position="top-right" />
-        <MglGeolocateControl position="top-right" />
+        <MglGeolocateControl
+          :positionOptions="{enableHighAccuracy: true, timeout: 6000}"
+          @geolocate="handleSearch($event, 2)"
+          position="top-right" />
         <MglScaleControl position="bottom-right"/>
         <MglMarker :v-if="parkings" v-for="parking in parkings" :key="parking.parking_id"
         :coordinates="parking.wgs84.coordinates">
@@ -67,8 +74,7 @@ import {
   MglMarker,
 } from 'vue-mapbox';
 
-import axios from 'axios';
-
+import parse from 'wellknown';
 import MglGeocoderControl from './GeocoderControl';
 
 export default {
@@ -104,8 +110,18 @@ export default {
     this.lazyLoad = true;
   },
   methods: {
-    handleSearch(event) {
-      this.$emit('result', event.result);
+    handleSearch(event, type) {
+      if (type === 1) { // From search
+        this.$emit('result', {
+          coordinate: parse.stringify(event.result.geometry),
+          location: (event.result.text_sv) ? event.result.text_sv : 'Ingen platsnamn',
+        });
+      } else if (type === 2) { // From current position
+        this.$emit('result', {
+          coordinate: `POINT (${event.mapboxEvent.coords.longitude} ${event.mapboxEvent.coords.latitude})`,
+          location: 'Din position',
+        });
+      }
     },
   },
 };

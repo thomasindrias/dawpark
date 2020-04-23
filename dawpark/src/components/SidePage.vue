@@ -6,7 +6,7 @@
       <span class="results">{{ parkings.data.length }} Resultat </span>
       <span class="results-place">
         i närheten av
-        {{ (parkings.searchResult.text_sv) ? parkings.searchResult.text_sv : "Ingen platsnamn" }}
+        {{ parkings.location }}
         </span>
       </h1>
     </div>

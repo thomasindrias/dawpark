@@ -1,5 +1,9 @@
 <template>
-  <map-box :accessToken="accessToken" :mapStyle="mapStyle" :parkings="parkings.data"
+  <map-box
+  :accessToken="accessToken"
+  :mapStyle="mapStyle"
+  :parkings="parkings.data"
+  @result="searchHandler"
   :mobile="true"></map-box>
 </template>
 
@@ -35,7 +39,7 @@ export default {
       this.parkings.searchResult = result;
 
       EventService.getProximityParking(
-        parse.stringify(result.geometry),
+        result.coordinate,
         20000,
       ).then((response) => {
         console.log(response.data);
