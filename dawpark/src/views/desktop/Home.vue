@@ -5,7 +5,7 @@
       <map-box :accessToken="accessToken" :mapStyle="mapStyle" :parkings="parkings.data"
       @result="searchHandler"></map-box>
     </div>
-    <side-page v-if="parkings.searchResult !== null"
+    <side-page v-if="parkings.data !== null"
     :parkings="parkings" class="side-page column"></side-page>
   </div>
 </template>
@@ -15,6 +15,7 @@ import MapBox from '@/components/MapBox.vue';
 import SidePage from '@/components/SidePage.vue';
 import Search from '@/components/Search.vue';
 import EventService from '@/services/EventService';
+import parse from 'wellknown';
 
 export default {
   components: {
@@ -32,18 +33,20 @@ export default {
       },
     };
   },
-  mounted() {
-    EventService.getAllParkings().then((response) => {
-      this.parkings.data = response.data.slice(0, 10);
-    })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
   methods: {
     searchHandler(result) {
       this.parkings.searchResult = result;
-      // console.log(this.parkings.searchResult);
+
+      EventService.getProximityParking(
+        parse.stringify(result.geometry),
+        20000,
+      ).then((response) => {
+        console.log(response.data);
+        this.parkings.data = response.data;
+      })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

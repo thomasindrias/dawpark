@@ -12,20 +12,33 @@ yarn install
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Features
 
-### Run your unit tests
-```
-yarn test:unit
-```
+### Data acquisition
 
-### Lints and fixes files
-```
-yarn lint
-```
+- [x] Get data from Backend
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Map functionality
+
+- [x] Search
+- [x] Get current position
+- [x] Park markers
+- [ ] Press to pinpoint
+
+### Filtering
+
+- [x] Search by radius
+- [x] Filter through distance
+- [x] Filter through free/paid
+
+### Desktop version
+
+- [x] Map
+- [x] Result page
+- [ ] Filters
+
+### Mobile version
+
+- [x] Map
+- [ ] Result page
+- [ ] Filters

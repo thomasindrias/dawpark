@@ -6,6 +6,7 @@
 <script>
 import MapBox from '@/components/MapBox.vue';
 import EventService from '@/services/EventService';
+import parse from 'wellknown';
 
 export default {
   components: {
@@ -28,6 +29,22 @@ export default {
       .catch((err) => {
         console.log(err);
       });
+  },
+  methods: {
+    searchHandler(result) {
+      this.parkings.searchResult = result;
+
+      EventService.getProximityParking(
+        parse.stringify(result.geometry),
+        20000,
+      ).then((response) => {
+        console.log(response.data);
+        this.parkings.data = response.data;
+      })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
 };
 </script>

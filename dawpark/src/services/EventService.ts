@@ -5,6 +5,15 @@ const serverClient = axios.create({
 });
 
 export default {
+  // @TODO
+  getProximityParking(coordinate: string, range: number) {
+    return serverClient.get('/parking/proximity', {
+      params: {
+        coordinate,
+        range,
+      },
+    });
+  },
   getAllParkings() {
     return serverClient.get('/parkings');
   },
