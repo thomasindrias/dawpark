@@ -6,7 +6,15 @@ import * as wkx from "wkx";
 import { Geometry } from "geojson";
 import { formatError } from "../utils/formatError";
 
+import { redisClient } from "../redis";
+
 export const getAllParkings = async (req: Request, res: Response) => {
+  // If we make it here we know there was no hit in the cache. We need to set a new RedisEntry
+  const redisKeyForParkings = "parkings";
+
+  const dbResult = await Parking.find();
+  redisClient.set(redisKeyForParkings, JSON.stringify(dbResult));
+
   return res.send(await Parking.find()).status(200);
 };
 

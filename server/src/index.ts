@@ -13,6 +13,9 @@ import { getParkings } from "./fetcher/trafikverket";
 // Routes
 import { getAllParkings, getParkingsWithinRange } from "./routes/parkings";
 
+// Cache detection
+import { cacheForParkings } from "./cache/parkings";
+
 const app = express();
 
 // Setup middlewares
@@ -23,7 +26,7 @@ app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 
 // Routes
-app.get("/parkings", getAllParkings);
+app.get("/parkings", cacheForParkings, getAllParkings);
 app.get("/parking/proximity", getParkingsWithinRange);
 app.get("/", async (_, res: Response) => {
   res.send("Good, better, best. Never let it rest. 'Til your good is better and your better is best.");
@@ -36,7 +39,8 @@ createPostgresConnection().then(async (connection) => {
 
   // We fetch fresh trafikverket data, for now using dropSchema on each restart
   // @TODO: Never use dropSchema in production :)))
-  //await getParkings();
+  // console.log("Getting parking data from Trafikverket...");
+  // await getParkings();
 
   // We start our server
   const port = process.env.PORT || 3000;
