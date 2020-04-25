@@ -2,15 +2,16 @@
   <map-box
   :accessToken="accessToken"
   :mapStyle="mapStyle"
-  :parkings="parkings.data"
+  :parkings="parkings"
   @result="searchHandler"
-  :mobile="true"></map-box>
+  :mobile="true"
+  :proximity="proximity"
+  ></map-box>
 </template>
 
 <script>
 import MapBox from '@/components/MapBox.vue';
 import EventService from '@/services/EventService';
-import parse from 'wellknown';
 
 export default {
   components: {
@@ -22,27 +23,23 @@ export default {
       mapStyle: process.env.VUE_APP_MB_STYLE,
       parkings: {
         searchResult: null,
-        data: null,
+        data: [],
       },
+      proximity: '10000',
     };
-  },
-  mounted() {
-    EventService.getAllParkings().then((response) => {
-      this.parkings.data = response.data.slice(0, 10);
-    })
-      .catch((err) => {
-        console.log(err);
-      });
   },
   methods: {
     searchHandler(result) {
-      this.parkings.searchResult = result;
+      if (typeof (result) === 'object') {
+        this.parkings.searchResult = result;
+      } else {
+        this.proximity = result;
+      }
 
       EventService.getProximityParking(
-        result.coordinate,
-        20000,
+        this.parkings.searchResult.coordinate,
+        this.proximity,
       ).then((response) => {
-        console.log(response.data);
         this.parkings.data = response.data;
       })
         .catch((err) => {

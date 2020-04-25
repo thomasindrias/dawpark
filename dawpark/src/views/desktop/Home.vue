@@ -1,26 +1,29 @@
 <template>
   <div class="home">
-    <search/>
     <div class="map-page column">
-      <map-box :accessToken="accessToken" :mapStyle="mapStyle" :parkings="parkings.data"
+      <map-box
+      :proximity="proximity"
+      :accessToken="accessToken"
+      :mapStyle="mapStyle"
+      :parkings="parkings"
       @result="searchHandler"></map-box>
     </div>
-    <side-page v-if="parkings.data !== null"
-    :parkings="parkings" class="side-page column"></side-page>
+    <side-page v-if="parkings.searchResult !== null"
+    :parkings="parkings" class="side-page column"
+    @proximity="searchHandler"
+    ></side-page>
   </div>
 </template>
 
 <script>
 import MapBox from '@/components/MapBox.vue';
 import SidePage from '@/components/SidePage.vue';
-import Search from '@/components/Search.vue';
 import EventService from '@/services/EventService';
 
 export default {
   components: {
     MapBox,
     SidePage,
-    Search,
   },
   data() {
     return {
@@ -28,19 +31,23 @@ export default {
       mapStyle: process.env.VUE_APP_MB_STYLE,
       parkings: {
         searchResult: null,
-        data: null,
+        data: [],
       },
+      proximity: '10000',
     };
   },
   methods: {
     searchHandler(result) {
-      this.parkings.searchResult = result;
+      if (typeof (result) === 'object') {
+        this.parkings.searchResult = result;
+      } else {
+        this.proximity = result;
+      }
 
       EventService.getProximityParking(
-        result.coordinate,
-        20000,
+        this.parkings.searchResult.coordinate,
+        this.proximity,
       ).then((response) => {
-        console.log(response.data);
         this.parkings.data = response.data;
       })
         .catch((err) => {

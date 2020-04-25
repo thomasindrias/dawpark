@@ -6,13 +6,14 @@
       <span class="results">{{ parkings.data.length }} Resultat </span>
       <span class="results-place">
         i närheten av
-        {{ parkings.location }}
+        {{ parkings.searchResult.location }}
         </span>
       </h1>
     </div>
     <hr>
     <div class="row">
-      <filter-options :options="filters" @input="filterHandler"/>
+      <filter-options class="column" :options="filters" @input="filterHandler"/>
+      <range-slider class="column" :range="range" @input="updateRange"/>
     </div>
     <div class="row results-wrapper">
       <park-element @click.native="parkDetails(parking)"
@@ -26,11 +27,13 @@
 <script>
 import ParkElement from '@/components/ParkElement.vue';
 import FilterOptions from '@/components/FilterOptions.vue';
+import RangeSlider from '@/components/RangeSlider.vue';
 
 export default {
   components: {
     ParkElement,
     FilterOptions,
+    RangeSlider,
   },
   props: {
     parkings: {},
@@ -43,11 +46,15 @@ export default {
         price: 'Gratis',
       },
       filters: ['Filter 1', 'Filter 2', 'Filter 3'],
+      range: [1000, 50000], // In meters
     };
   },
   methods: {
     filterHandler(option) {
       console.log(option);
+    },
+    updateRange(option) {
+      this.$emit('proximity', option);
     },
     parkDetails(parkInfo) {
       // console.log(event);
