@@ -95,7 +95,6 @@ import {
 } from 'vue-mapbox';
 
 import parse from 'wellknown';
-import zoomLevels from '@/components/ZoomLevels';
 import MglGeocoderControl from './GeocoderControl';
 
 export default {
