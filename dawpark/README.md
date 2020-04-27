@@ -23,13 +23,13 @@ yarn serve
 - [x] Search
 - [x] Get current position
 - [x] Park markers
-- [ ] Press to pinpoint
+- [~] Press to pinpoint (Radius added => add small circle in the middle of radius)
 
 ### Filtering
 
 - [x] Search by radius
-- [x] Filter through distance
-- [x] Filter through free/paid
+- [ ] Filter through distance
+- [ ] Filter through free/paid
 
 ### Desktop version
 
@@ -40,5 +40,6 @@ yarn serve
 ### Mobile version
 
 - [x] Map
-- [ ] Result page
+- [x] Result page
+- [x] Scroll to result
 - [ ] Filters
