@@ -8,6 +8,7 @@
         :center.sync="initCenter"
         :zoom="zoom"
         :attributionControl="false"
+        @click="handleSearch($event, 3)"
       >
         <MglGeocoderControl
           :accessToken="accessToken"
@@ -22,6 +23,7 @@
         />
         <MglGeolocateControl
           position="bottom-left"
+          :positionOptions="{enableHighAccuracy: true, timeout: 6000}"
           @geolocate="handleSearch($event, 2)"
         />
         <MglMarker
@@ -47,6 +49,7 @@
         :center.sync="initCenter"
         :zoom="zoom"
         :attributionControl="false"
+        @click="handleSearch($event, 3)"
       >
         <MglGeocoderControl
           :accessToken="accessToken"
@@ -177,7 +180,7 @@ export default {
   },
   methods: {
     handleSearch(event, type) {
-      console.log('triggered');
+      // console.log('triggered');
       if (type === 1) { // From search
         this.mapCenter = event.result.center;
 
@@ -191,6 +194,18 @@ export default {
         this.$emit('result', {
           coordinate: `POINT (${event.mapboxEvent.coords.longitude} ${event.mapboxEvent.coords.latitude})`,
           location: 'din position',
+        });
+      } else if (type === 3) { // From pinned position
+        // console.log(event.map);
+        this.mapCenter = [event.mapboxEvent.lngLat.lng, event.mapboxEvent.lngLat.lat];
+        event.map.flyTo({
+          center: this.mapCenter,
+          zoom: 10,
+        });
+
+        this.$emit('result', {
+          coordinate: `POINT (${event.mapboxEvent.lngLat.lng} ${event.mapboxEvent.lngLat.lat})`,
+          location: 'markerad position',
         });
       }
 
@@ -212,8 +227,8 @@ export default {
           ],
           base: 2,
         },
-        'circle-color': '#292934',
-        'circle-opacity': 0.1,
+        'circle-color': '#1da1f2',
+        'circle-opacity': 0.3,
       };
     },
   },
