@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="columns is-vcentered">
+    <div class="columns is-mobile is-vcentered">
       <div class="column">
         <input class="slider is-small is-circle"
           step="1000"
           :min="range[0]" :max="range[1]"
           :value="proximity"
           type="range"
-          @change="updateProximity"
+          @input.prevent="updateProximity"
           >
       </div>
       <div class="column v-centered is-4"><span>{{(proximity/1000)}} km</span></div>
@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     updateProximity(event) {
-      console.log(event.target.value);
+      // console.log(event.target.value);
       this.proximity = event.target.value;
       this.$emit('input', this.proximity);
     },

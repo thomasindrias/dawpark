@@ -88,8 +88,8 @@ p {
 
 .park {
   margin: 20px 10px;
-  height: 320px;
-  width: 210px;
+  height: 100%;
+  width: 100%;
   flex: 1 1 auto;
 }
 
