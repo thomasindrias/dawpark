@@ -46,11 +46,6 @@ export default {
   },
   data() {
     return {
-      parkingInfo: {
-        address: 'Älgstigen 9',
-        postnr: '641 53 Katrineholm',
-        price: 'Gratis',
-      },
       filters: ['Filter 1', 'Filter 2', 'Filter 3'],
       range: [1000, 50000], // In meters
     };
@@ -61,9 +56,6 @@ export default {
     },
     updateRange(option) {
       this.$emit('proximity', option);
-    },
-    parkDetails(parkInfo) {
-      // console.log(event);
     },
     parseParkingInfo(parking) {
       return {

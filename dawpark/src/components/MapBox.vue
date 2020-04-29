@@ -157,6 +157,16 @@ export default {
                 id: 'value0',
               },
             },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [16.176372, 58.590318],
+              },
+              properties: {
+                id: 'value1',
+              },
+            },
           ],
         },
       },

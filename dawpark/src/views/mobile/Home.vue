@@ -54,12 +54,14 @@ export default {
   },
   methods: {
     searchHandler(result) {
-      if (typeof (result) === 'object') {
+      if (typeof (result) === 'object') { // From MapBox
         this.parkings.searchResult = result;
-      } else {
+        this.scrollTo('#element');
+      } else { // From MobilePage
         this.proximity = result;
       }
 
+      // Get parkings by proximity from backend
       EventService.getProximityParking(
         this.parkings.searchResult.coordinate,
         this.proximity,
@@ -69,8 +71,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-
-      VueScrollTo.scrollTo('#mobile', 500, this.scrollOptions);
+    },
+    scrollTo(element) {
+      VueScrollTo.scrollTo(element, 500, this.scrollOptions);
     },
   },
 };
@@ -85,7 +88,7 @@ export default {
 
 .map-page {
   // flex: 1;
-  height: 100vh;
+  height: 100%;
 }
 
 .map {
