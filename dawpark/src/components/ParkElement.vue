@@ -1,11 +1,15 @@
 <template>
   <div class="park">
+    <!-- Future implementation
     <div class="image">
       <img class="image" src="https://circontrol.com/wp-content/uploads/2019/02/180125-Circontrol-BAIXA-80-1080x675.jpg" alt="https://www.google.com/url?sa=i&url=https%3A%2F%2Fvectorified.com%2Fimage-not-available-icon&psig=AOvVaw2wegJoY6LDsAGMkoQNnyAJ&ust=1587319978399000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCLDZ9u3J8ugCFQAAAAAdAAAAABAI">
     </div>
+    -->
     <div class="titleBox">
       <h1 class="address">{{parkingInfo.index + '. ' + parkingInfo.address}}</h1>
-      <p class="postnumber">{{(parkingInfo.postnr) ? parkingInfo.postnr : "Ingen information"}}</p>
+      <p class="postnumber">
+        {{(parkingInfo.closestCity) ? parkingInfo.closestCity : "Ingen information"}}
+      </p>
       <h1 class="price">{{parkingInfo.price}}</h1>
     </div>
     <hr>
@@ -56,7 +60,7 @@ h1, p {
 }
 
 h1 {
-  margin: 1px 0px;
+  margin: 4px 0px;
   font-size: 30px;
 }
 
@@ -91,11 +95,23 @@ p {
   height: 100%;
   width: 100%;
   flex: 1 1 auto;
+
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+}
+
+.park:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
 }
 
 .image {
   max-height: 160px;
   border-radius: 10px;
+
+  margin-bottom: 17px;
 }
 
 .image img {
@@ -106,7 +122,7 @@ p {
 }
 
 .titleBox {
-  margin-top: 17px;
+
 }
 
 .address {

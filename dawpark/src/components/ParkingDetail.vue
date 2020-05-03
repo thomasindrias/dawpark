@@ -2,11 +2,28 @@
 <div class="content">
   <a @click="closeDetail" class="icon"><i class="fas fa-arrow-left"></i></a>
   <div class="row">
-    <h1>{{ parking.name }}</h1>
+    <h1>{{ parking.address }}</h1>
   </div>
   <hr>
   <div class="row results-wrapper">
-    hej
+    <div v-if="parking.status !== null">
+      <h3>Status</h3>
+      <p>{{parking.status}}</p>
+    </div>
+    <div class="modified-time" v-if="parking.modifiedTime !== null">
+      <h3>Senast uppdaterad</h3>
+      <p>{{parking.modifiedTime}}</p>
+    </div>
+    <div class="description">
+      <div v-if="parking.closestCity !== null">
+        <h3>Närmaste staden</h3>
+        <p>{{parking.closestCity}}</p>
+      </div>
+      <div v-if="parking.description !== null">
+        <h3>Beskrivning</h3>
+        <p>{{parking.description}}</p>
+      </div>
+    </div>
   </div>
 </div>
 </template>
@@ -40,6 +57,10 @@ h1 {
   font-size: 36px;
 }
 
+h3 {
+  font-size: 18px;
+}
+
 .results {
   color: $black;
 }
@@ -62,13 +83,29 @@ h1 {
   color: $black;
 }
 
+.icon:hover {
+  cursor: pointer;
+}
+
+.modified-time {
+  text-align: right;
+}
+
 .results-wrapper {
-  margin-top: 40px;
+  margin-top: 20px;
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: space-between;
   align-items: auto;
   align-content: start;
+}
+
+.results-wrapper div {
+  margin: 20px 0;
+}
+
+.description {
+  width: 100%;
 }
 
 .row {

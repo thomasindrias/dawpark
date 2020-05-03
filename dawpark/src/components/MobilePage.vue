@@ -6,7 +6,10 @@
         <div/>
       </div>
     </div>
-    <div v-if="selected === null" class="content">
+    <div
+      v-if="selected === null"
+      class="content animated slideInUp faster"
+    >
       <div class="row">
         <h1>
         <span class="results">{{ parkings.data.length }} Resultat </span>
@@ -28,9 +31,12 @@
         :parkingInfo="parseParkingInfo(parking, ++index)" />
       </div>
   </div>
-    <div v-else class="detail">
+    <div
+      v-else
+      class="detail animated slideInLeft faster"
+    >
     <parking-detail
-      :parking="selected"
+      :parking="parseParkingInfo(selected, -1)"
       @close="selected = null"
     />
   </div>
@@ -42,6 +48,11 @@ import ParkElement from '@/components/ParkElement.vue';
 import ParkingDetail from '@/components/ParkingDetail.vue';
 import FilterOptions from '@/components/FilterOptions.vue';
 import RangeSlider from '@/components/RangeSlider.vue';
+import moment from 'moment/moment';
+
+require('moment/locale/sv');
+
+moment.locale('sv');
 
 export default {
   components: {
@@ -80,10 +91,16 @@ export default {
       this.$emit('proximity', option);
     },
     parseParkingInfo(parking, index) {
+      // Last time it was modified
+      const date = new Date(Date.parse(parking.modified_time));
+
       return {
         address: parking.name,
-        postnr: parking.distance_to_nearest_city,
+        closestCity: parking.distance_to_nearest_city,
+        description: parking.description,
+        modifiedTime: moment(date).fromNow(),
         price: (parking.tariff_payment_fee) ? 'Betald' : 'Gratis',
+        status: (parking.open_status === 'open') ? 'Öppet' : 'Stängt',
         index,
       };
     },
@@ -93,6 +110,7 @@ export default {
 
 <style lang="scss" scoped>
 .mobile-page {
+  position: relative;
   height: 100%;
   background: #FFFFFF;
   box-shadow: 20px 0px 60px rgba(0, 0, 0, 0.3);
