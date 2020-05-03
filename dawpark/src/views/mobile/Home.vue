@@ -9,6 +9,8 @@
         @result="searchHandler"
         :mobile="true"
         :proximity="proximity"
+        @selected="setSelection"
+        ref="map"
         ></map-box>
       </div>
     </div>
@@ -17,9 +19,13 @@
         <mobile-page
         v-if="parkings.searchResult !== null"
         :parkings="parkings"
-        @proximity="searchHandler"/>
+        @proximity="searchHandler"
+        @parkingClick="this.$refs.map.goToMarker"
+        @selected="selected"
+        ref="detail"
+        />
       </div>
-      </div>
+    </div>
   </div>
 </template>
 
@@ -54,9 +60,12 @@ export default {
   },
   methods: {
     searchHandler(result) {
+      // Clear previous data
+      if (this.$refs.detail) this.$refs.detail.selected = null;
+
       if (typeof (result) === 'object') { // From MapBox
         this.parkings.searchResult = result;
-        this.scrollTo('#element');
+        this.scrollTo('#mobile');
       } else { // From MobilePage
         this.proximity = result;
       }
@@ -74,6 +83,13 @@ export default {
     },
     scrollTo(element) {
       VueScrollTo.scrollTo(element, 500, this.scrollOptions);
+    },
+    selected(sel) {
+      if (!sel) this.$refs.map.resetToCenter();
+    },
+    setSelection(parking) {
+      this.$refs.detail.parkDetails(parking);
+      this.scrollTo('#mobile');
     },
   },
 };

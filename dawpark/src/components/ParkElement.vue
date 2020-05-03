@@ -4,7 +4,7 @@
       <img class="image" src="https://circontrol.com/wp-content/uploads/2019/02/180125-Circontrol-BAIXA-80-1080x675.jpg" alt="https://www.google.com/url?sa=i&url=https%3A%2F%2Fvectorified.com%2Fimage-not-available-icon&psig=AOvVaw2wegJoY6LDsAGMkoQNnyAJ&ust=1587319978399000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCLDZ9u3J8ugCFQAAAAAdAAAAABAI">
     </div>
     <div class="titleBox">
-      <h1 class="address">{{parkingInfo.address}}</h1>
+      <h1 class="address">{{parkingInfo.index + '. ' + parkingInfo.address}}</h1>
       <p class="postnumber">{{(parkingInfo.postnr) ? parkingInfo.postnr : "Ingen information"}}</p>
       <h1 class="price">{{parkingInfo.price}}</h1>
     </div>

@@ -6,32 +6,40 @@
         <div/>
       </div>
     </div>
-      <div class="content">
-    <div class="row">
-      <h1>
-      <span class="results">{{ parkings.data.length }} Resultat </span>
-      <span class="results-place">
-        i närheten av
-        {{ parkings.searchResult.location }}
-        </span>
-      </h1>
-    </div>
-    <hr>
-    <div class="row">
-      <range-slider class="column" :range="range" @input="updateRange"/>
-      <filter-options class="column" :options="filters" @input="filterHandler"/>
-    </div>
-    <div class="row results-wrapper">
-      <park-element @click.native="parkDetails(parking)"
-      v-for="parking in parkings.data" :key="parking.parking_id"
-      :parkingInfo="parseParkingInfo(parking)" />
-    </div>
+    <div v-if="selected === null" class="content">
+      <div class="row">
+        <h1>
+        <span class="results">{{ parkings.data.length }} Resultat </span>
+        <span class="results-place">
+          i närheten av
+          {{ parkings.searchResult.location }}
+          </span>
+        </h1>
+      </div>
+      <hr>
+      <div class="row">
+        <range-slider class="column" :range="range" @input="updateRange"/>
+        <filter-options class="column" :options="filters" @input="filterHandler"/>
+      </div>
+      <div class="row results-wrapper">
+        <park-element
+        @click.native="parkDetails(parking)"
+        v-for="(parking, index) in parkings.data" :key="parking.parking_id"
+        :parkingInfo="parseParkingInfo(parking, ++index)" />
+      </div>
+  </div>
+    <div v-else class="detail">
+    <parking-detail
+      :parking="selected"
+      @close="selected = null"
+    />
   </div>
   </div>
 </template>
 
 <script>
 import ParkElement from '@/components/ParkElement.vue';
+import ParkingDetail from '@/components/ParkingDetail.vue';
 import FilterOptions from '@/components/FilterOptions.vue';
 import RangeSlider from '@/components/RangeSlider.vue';
 
@@ -40,28 +48,43 @@ export default {
     ParkElement,
     FilterOptions,
     RangeSlider,
+    ParkingDetail,
   },
   props: {
     parkings: {},
+  },
+  watch: {
+    selected(val) {
+      if (val === null) this.$emit('selected', false);
+    },
   },
   data() {
     return {
       filters: ['Filter 1', 'Filter 2', 'Filter 3'],
       range: [1000, 50000], // In meters
+      selected: null,
     };
   },
   methods: {
     filterHandler(option) {
       console.log(option);
     },
+    parkDetails(parking) {
+      this.$emit('parkingClick', parking.parking_id);
+
+      // open detail page
+      this.selected = parking;
+      this.$emit('selected', true);
+    },
     updateRange(option) {
       this.$emit('proximity', option);
     },
-    parseParkingInfo(parking) {
+    parseParkingInfo(parking, index) {
       return {
         address: parking.name,
         postnr: parking.distance_to_nearest_city,
         price: (parking.tariff_payment_fee) ? 'Betald' : 'Gratis',
+        index,
       };
     },
   },
@@ -125,6 +148,10 @@ h1 {
   justify-content: space-between;
   align-items: auto;
   align-content: start;
+}
+
+.detail {
+  margin-top: 20px;
 }
 
 .row {

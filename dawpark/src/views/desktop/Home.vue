@@ -6,11 +6,17 @@
       :accessToken="accessToken"
       :mapStyle="mapStyle"
       :parkings="parkings"
-      @result="searchHandler"></map-box>
+      @result="searchHandler"
+      @selected="setSelection"
+      ref="map"
+      ></map-box>
     </div>
     <side-page v-if="parkings.searchResult !== null"
     :parkings="parkings" class="side-page column"
     @proximity="searchHandler"
+    @parkingClick="this.$refs.map.goToMarker"
+    @selected="selected"
+    ref="detail"
     ></side-page>
   </div>
 </template>
@@ -53,6 +59,12 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    selected(sel) {
+      if (!sel) this.$refs.map.resetToCenter();
+    },
+    setSelection(parking) {
+      this.$refs.detail.parkDetails(parking);
     },
   },
 };
