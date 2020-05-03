@@ -19,7 +19,7 @@ module.exports = {
   pwa: {
     workboxOptions: {
       skipWaiting: true,
-      display: "fullscreen",
-    }
+    },
+    display: 'standalone',
   }
 }
