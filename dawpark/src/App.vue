@@ -84,6 +84,7 @@ export default Vue.extend({
 body,
 html {
   height: 100%;
+  min-height: 100%;
   width: 100%;
   display: flex;
 }
