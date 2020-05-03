@@ -68,7 +68,6 @@ export default {
 
       // open detail page
       this.selected = parking;
-      this.$emit('selected', true);
     },
     updateRange(option) {
       this.$emit('proximity', option);
