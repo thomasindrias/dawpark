@@ -14,7 +14,7 @@ The application is meant to be used as a quality of life "tool/service" that dep
 
 #### Technological specification:
 
- - The client framework will be [Vue](https://vuejs.org/). The application will also be available as a progressive web app (PWA) to simplify use "on the fly".
+ - The client framework will be [Vue](https://vuejs.org/) together with [TypeScript](https://www.typescriptlang.org/). [Mapbox](https://www.mapbox.com/) will also be used to view and control a map. The application will also be available as a progressive web app (PWA) to simplify use "on the fly".
  - The backend framework will be [Node.js](https://nodejs.org/en/)/[Express.js](https://expressjs.com) along with [Redis](https://redis.io/) for caching and [PostgresQL](https://www.postgresql.org/) as a potential database.
 
 ##### Hosts (can still change)
