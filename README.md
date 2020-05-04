@@ -1,5 +1,10 @@
 # Dawpark
 
+**The application can be found [here](https://dawpark.netlify.app/).**
+
+#### Mid course screencast:
+Link to screencast: https://youtu.be/qv_utrADjsA
+
 #### Functional specification:
 The application is meant to be used as a quality of life "tool/service" that depending on user defined filters and geo-location points out the nearest/cheapest parking space. An example can be:
 
