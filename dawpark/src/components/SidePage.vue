@@ -89,6 +89,7 @@ export default {
         address: parking.name,
         closestCity: parking.distance_to_nearest_city,
         description: parking.description,
+        coordinates: parking.wgs84.coordinates,
         modifiedTime: moment(date).fromNow(),
         price: (parking.tariff_payment_fee) ? 'Betald' : 'Gratis',
         status: (parking.open_status === 'open') ? 'Öppet' : 'Stängt',

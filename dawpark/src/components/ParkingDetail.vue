@@ -1,6 +1,6 @@
 <template>
 <div class="content">
-  <a @click="closeDetail" class="icon"><i class="fas fa-arrow-left"></i></a>
+  <a @click="closeDetail" class="back icon"><i class="fas fa-arrow-left"></i></a>
   <div class="row">
     <h1>{{ parking.address }}</h1>
   </div>
@@ -10,7 +10,9 @@
       <h3>Status</h3>
       <p>{{parking.status}}</p>
     </div>
-    <div class="modified-time" v-if="parking.modifiedTime !== null">
+    <div class="modified-time has-text-right-tablet"
+      v-if="parking.modifiedTime !== null"
+    >
       <h3>Senast uppdaterad</h3>
       <p>{{parking.modifiedTime}}</p>
     </div>
@@ -23,6 +25,14 @@
         <h3>Beskrivning</h3>
         <p>{{parking.description}}</p>
       </div>
+      <div>
+        <button @click="GMaps" class="button">
+          <span class="icon directions">
+            <i class="fas fa-directions"></i>
+          </span>
+          <span>Vägbeskrivning</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -34,19 +44,33 @@ export default {
   props: {
     parking: null,
   },
+  computed: {
+    directions() {
+      return `https://www.google.com/maps/place/${this.parking.coordinates[1]},${this.parking.coordinates[0]}`;
+    },
+  },
   data() {
     return {
     };
   },
   methods: {
     closeDetail() {
+      console.log(this.directions);
       this.$emit('close', true);
+    },
+    GMaps() {
+      window.open(
+        this.directions,
+        '_blank', // Open new tab
+      );
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "bulma";
+
 hr {
   border: 1px solid #D9D9D9;
   opacity: 50%;
@@ -75,21 +99,24 @@ h3 {
 }
 
 .icon {
-  display: flex;
-  position: absolute;
-  top: 20px;
-
   font-size: 26px;
-  color: $black;
 }
 
 .icon:hover {
   cursor: pointer;
 }
 
-.modified-time {
-  text-align: right;
+.back {
+  display: flex;
+  position: absolute;
+  top: 20px;
+  color: $black;
 }
+
+.directions {
+  color: $green;
+}
+
 
 .results-wrapper {
   margin-top: 20px;

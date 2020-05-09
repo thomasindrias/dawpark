@@ -30,7 +30,7 @@
         />
         <MglMarker
           :v-if="parkings.data"
-          v-for="(parking, index) in parkings.data"
+          v-for="parking in parkings.data"
           :key="parking.parking_id"
           :ref="parking.parking_id"
           :coordinates="parking.wgs84.coordinates"
@@ -41,7 +41,7 @@
           <font-awesome-icon
             :icon="['fas', 'map-marker']"
           />
-          <span>{{++index}}</span>
+          <span>P</span>
           </div>
         </div>
         </MglMarker>
@@ -98,7 +98,7 @@
         <MglScaleControl position="bottom-right"/>
         <MglMarker
           :v-if="parkings.data"
-          v-for="(parking, index) in parkings.data"
+          v-for="parking in parkings.data"
           :key="parking.parking_id"
           :ref="parking.parking_id"
           :coordinates="parking.wgs84.coordinates"
@@ -109,7 +109,7 @@
           <font-awesome-icon
             :icon="['fas', 'map-marker']"
           />
-          <span>{{++index}}</span>
+          <span>P</span>
           </div>
         </div>
         </MglMarker>
@@ -355,10 +355,11 @@ export default {
   .icon span {
     position: absolute;
     color: $white;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
-    left: 26%;
-    top: 1px;
+    left: 27%;
+    justify-items: center;
+    top: 2px;
   }
 
   .map-pin svg {
