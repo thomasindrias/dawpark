@@ -25,6 +25,37 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
   const coordinates = req.query.coordinate; // => POINT(LONG, LAT)
   const range = req.query.range; // => Range in meters
 
+  // Filters
+  const filters = {
+    toilet: req.query.toilet ? true : false,
+    shower: req.query.shower ? true : false,
+    firstAid: req.query.firstAidEquipment ? true : false,
+    refuseBin: req.query.refuseBin ? true : false,
+  };
+
+  /*
+   * We create an "append-string" for filters that will affect the query
+   * The logic is:
+   *  - It looks through a pre-determined list of filters and checks if any of them are passed in with the request
+   *  - For each existing filter, we create an array of "subset criterions" that we use in conjunction with postgres "@>"-operator (subset operator)
+   *  - After all filters are processed we have a string that we can append to the query in order to apply filters.
+   */
+  let queryFilters = " AND equipment @> '[";
+  let filterCount = 0;
+  for (const filter in filters) {
+    if (filters[filter]) {
+      // queryFilters += ` AND equipment @> '{"Type": "` + filter + `"}'`;
+      queryFilters += `{"Type": "` + filter + `"},`;
+      filterCount++;
+    }
+  }
+
+  // Only if filterCount > 0 we care about cleaning the string
+  if (filterCount) {
+    const lastCommandIndex = queryFilters.lastIndexOf(",");
+    queryFilters = queryFilters.substring(0, lastCommandIndex) + "]'";
+  }
+
   try {
     await getParkingsWithinRangeSchema.validate({ coordinate: coordinates, range }, { abortEarly: false });
   } catch (err) {
@@ -34,18 +65,23 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
     return res.send(formatError(err)).status(400);
   }
 
-  // We need the entityManager in order to do some specia
+  // We need the entityManager in order to do some special queries
   const em: EntityManager = getManager();
 
-  let queryString = `SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')`;
+  let queryString = filterCount
+    ? `SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')` + queryFilters
+    : `SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')`;
+
   console.log("Query ===> " + queryString);
   console.log("=================================");
 
-  /* @TODO: SQL Injection problem as we don't verify the input properly.
+  // We add filters to the query depending on which params are passed in with the requests
+
+  /* @TODO: SQL Injection problem as we don't verify the input properly => Needs to be cleaned
    * POINT (LONG, LAT)
    * WGS SRID = 4326
    */
-  const users = await em.query(`SELECT * FROM parking WHERE ST_DWithin(wgs84, ST_GeomFromText('` + coordinates + `', 4326)::geography, '` + range + `')`);
+  const users = await em.query(queryString);
 
   /*
    * @TODO: This is a naive solution to the problem. A proper SQL-query could do the same parsing without having to go through all the data again
