@@ -1,4 +1,5 @@
 import { Entity, Column, BaseEntity, PrimaryColumn, Index } from "typeorm";
+import { Equipment } from "../classes/Parking";
 
 @Entity()
 export class Parking extends BaseEntity {
@@ -105,4 +106,7 @@ export class Parking extends BaseEntity {
   // // @TODO relate a field to an adjacent table as vehicle_load_type, vehicle_spaces and vehicle_type will always co-exist
   // @Column({ type: "text", array: true })
   // vehicle_type: string[];
+
+  @Column({ type: "jsonb", nullable: true })
+  equipment: Equipment[];
 }

@@ -1,5 +1,9 @@
 import { json } from "body-parser";
 
+export class Equipment {
+  Type: string;
+  Accessibility: string;
+}
 /**
  * A class that holds all the information about a parking lot considering information about parkings at trafikverket: https://api.trafikinfo.trafikverket.se/API/Model => Parking model
  */
@@ -10,13 +14,8 @@ export class ParkingShaper {
   description: string;
   distance_to_nearest_city: string;
 
-  //   // Equipment info
-  //   equipAccessibility: string;
-  //   equipType: string;
-
-  //   // Facility info
-  //   facAccessibility: string;
-  //   facType: string;
+  // Equipment info
+  equipment: Array<Equipment>;
 
   // coordinates
   sweref: string;
@@ -67,6 +66,7 @@ export class ParkingShaper {
     Deleted?: boolean;
     Description: string;
     DistanceToNearestCity: string;
+    Equipment: Array<{ Accessibility: string; Type: string }>;
     Geometry: {
       SWEREF99TM: string;
       WGS84: string;
@@ -96,6 +96,9 @@ export class ParkingShaper {
 
     this.description = jsonParkingInfo.Description;
     this.distance_to_nearest_city = jsonParkingInfo.DistanceToNearestCity;
+    if ("Equipment" in jsonParkingInfo) {
+      this.equipment = jsonParkingInfo.Equipment;
+    }
     this.sweref = jsonParkingInfo.Geometry.SWEREF99TM;
     this.icon_id = jsonParkingInfo.IconId;
     this.parking_id = jsonParkingInfo.Id;
