@@ -44,13 +44,30 @@ This returns data in the following format:
 GET /parking/proximity
 ```
 
-with two parameters:
+with two required parameters:
 
 ```JSON
 {
   "coordinate": WKT, // "coordinate": "POINT(LONG, LAT)"
   "range": number // "range": 100 => 100 meters
 }
+```
+
+There also exists optional filter parameters that can be sent along with the request:
+(Please note that the only possible value for each filter is true)
+
+```JSON
+  "toilet": true,
+  "shower": true,
+  "firstAid": true,
+  "refuseBin": true,
+
+```
+
+An example requests that fetches all parkings that have a toilet and a shower within 200 meters of point 12.5210905 58.3041534:
+
+```http
+GET /parking/proximity?coordinate=POINT(12.5210905 58.3041534)&range=200&toilet=true&shower=true
 ```
 
 Reponse body is formatted the same way as GET /parkings
@@ -84,7 +101,7 @@ Errors returned from the server will always be returned in the following format 
 
 - [x] Return a mirror of the Trafikverket API but from our own database to minimize API-Key usage
 - [x] Return parkings within a given radius
-- [ ] Return parkings fulfilling certain filter conditions
+- [x] Return parkings fulfilling certain filter conditions
 
 ### API-Enchancements
 
