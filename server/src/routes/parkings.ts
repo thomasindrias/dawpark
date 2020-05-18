@@ -29,7 +29,7 @@ export const getParkingsWithinRange = async (req: Request, res: Response) => {
   const filters = {
     toilet: req.query.toilet ? true : false,
     shower: req.query.shower ? true : false,
-    firstAid: req.query.firstAidEquipment ? true : false,
+    firstAidEquipment: req.query.firstAidEquipment ? true : false,
     refuseBin: req.query.refuseBin ? true : false,
   };
 

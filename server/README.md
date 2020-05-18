@@ -59,7 +59,7 @@ There also exists optional filter parameters that can be sent along with the req
 ```JSON
   "toilet": true,
   "shower": true,
-  "firstAid": true,
+  "firstAidEquipment": true,
   "refuseBin": true,
 
 ```
