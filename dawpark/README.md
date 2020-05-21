@@ -23,7 +23,7 @@ yarn serve
 - [x] Search
 - [x] Get current position
 - [x] Park markers
-- [~] Press to pinpoint (Radius added => add small circle in the middle of radius)
+- [x] Press to pinpoint (Radius added => add small circle in the middle of radius)
 
 ### Filtering
 
