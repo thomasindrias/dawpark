@@ -68,7 +68,6 @@ export default {
   },
   methods: {
     closeDetail() {
-      console.log(this.directions);
       this.$emit('close', true);
     },
     GMaps() {
