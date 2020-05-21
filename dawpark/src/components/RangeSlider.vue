@@ -2,7 +2,7 @@
   <div>
     <div class="columns is-mobile is-vcentered">
       <div class="column">
-        <input class="slider is-small is-circle"
+        <input class="slider is-fullwidth is-small is-circle"
           step="1000"
           :min="range[0]" :max="range[1]"
           :value="proximity"
@@ -10,7 +10,7 @@
           @input.prevent="updateProximity"
           >
       </div>
-      <div class="column v-centered is-4"><span>{{(proximity/1000)}} km</span></div>
+      <div class="column is-vcentered is-4"><span>{{(proximity/1000)}} km</span></div>
     </div>
   </div>
 </template>

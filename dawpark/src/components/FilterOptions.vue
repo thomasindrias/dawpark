@@ -1,50 +1,73 @@
 <template>
- <div class="dropdown" :class="{'is-active': open}">
-  <div class="dropdown-trigger">
-    <button @click="open = !open"
-    class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>{{selected}}</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <a
-        class="dropdown-item"
-        v-for="(option, i) of options"
-        :key="i"
-        @click="selected=option; open=false; $emit('input', option)"
-      >
-        {{ option }}
-      </a>
-    </div>
+<div class="tags">
+  <div
+    class="tag is-medium filter"
+    v-for="(filter, index) in filters" :key="filter.type"
+    :class="{'filter-is-active': filter.status}"
+    @click="filterHandler(index)"
+    >
+    <span>{{ filter.name }}</span>
   </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: {
-    options: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
-      selected: this.options.length > 0 ? this.options[0] : null,
-      open: false,
+      filters: [
+        {
+          type: 'toilet',
+          name: 'Toalett',
+          status: false,
+        },
+        {
+          type: 'shower',
+          name: 'Dusch',
+          status: false,
+        },
+        {
+          type: 'firstAidEquipment',
+          name: 'Förbandslåda',
+          status: false,
+        },
+        {
+          type: 'refuseBin',
+          name: 'Avfall',
+          status: false,
+        },
+      ],
     };
   },
-  mounted() {
-    this.$emit('input', this.selected);
+  methods: {
+    filterHandler(index) {
+      this.filters[index].status = !this.filters[index].status;
+      this.$emit('input', this.filters);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 @import "~bulma/bulma";
+
+.filter-is-active {
+  border-color: $gray;
+  border-width: 2px;
+  border-style: solid;
+}
+
+.filter-is-active span {
+  color:  $tag-color  !important;
+}
+
+.filter span {
+  color: $gray;
+}
+
+.filter:hover {
+  cursor: pointer;
+  background-color: hsl(0, 0%, 90%);
+}
 
 </style>

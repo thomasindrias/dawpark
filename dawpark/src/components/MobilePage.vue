@@ -20,9 +20,9 @@
         </h1>
       </div>
       <hr>
-      <div class="row">
-        <range-slider class="column" :range="range" @input="updateRange"/>
-        <filter-options class="column" :options="filters" @input="filterHandler"/>
+      <div>
+        <range-slider :range="range" @input="updateRange"/>
+        <filter-options @input="updateFilters"/>
       </div>
       <div class="row results-wrapper">
         <park-element
@@ -77,9 +77,6 @@ export default {
     };
   },
   methods: {
-    filterHandler(option) {
-      console.log(option);
-    },
     parkDetails(parking) {
       this.$emit('parkingClick', parking.parking_id);
 
@@ -87,12 +84,29 @@ export default {
       this.selected = parking;
       this.$emit('selected', true);
     },
+    updateFilters(filters) {
+      this.$emit('filter', filters);
+    },
     updateRange(option) {
       this.$emit('proximity', option);
     },
     parseParkingInfo(parking, index) {
       // Last time it was modified
       const date = new Date(Date.parse(parking.modified_time));
+
+      // Equipments
+      const equipments = parking.equipment;
+      equipments.forEach((equipment, i) => {
+        if (equipment.Type === 'toilet') {
+          equipments[i].icon = 'fas fa-restroom';
+        } else if (equipment.Type === 'shower') {
+          equipments[i].icon = 'fas fa-shower';
+        } else if (equipment.Type === 'firstAidEquipment') {
+          equipments[i].icon = 'fas fa-first-aid';
+        } else if (equipment.Type === 'refuseBin') {
+          equipments[i].icon = 'fas fa-dumpster';
+        }
+      });
 
       return {
         address: parking.name,
@@ -102,6 +116,7 @@ export default {
         modifiedTime: moment(date).fromNow(),
         price: (parking.tariff_payment_fee) ? 'Betald' : 'Gratis',
         status: (parking.open_status === 'open') ? 'Öppet' : 'Stängt',
+        equipments,
         index,
       };
     },

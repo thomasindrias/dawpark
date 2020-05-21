@@ -6,7 +6,7 @@
         :accessToken="accessToken"
         :mapStyle="mapStyle"
         :parkings="parkings"
-        @result="searchHandler"
+        @result="searchHandler($event, 0)"
         :mobile="true"
         :proximity="proximity"
         @selected="setSelection"
@@ -19,7 +19,8 @@
         <mobile-page
         v-if="parkings.searchResult !== null"
         :parkings="parkings"
-        @proximity="searchHandler"
+        @proximity="searchHandler($event, 1)"
+        @filter="searchHandler($event, 2)"
         @parkingClick="this.$refs.map.goToMarker"
         @selected="selected"
         ref="detail"
@@ -49,6 +50,7 @@ export default {
         data: [],
       },
       proximity: '10000',
+      filters: {},
       scrollOptions: {
         container: '#home',
         easing: 'ease-in',
@@ -59,21 +61,29 @@ export default {
     };
   },
   methods: {
-    searchHandler(result) {
+    searchHandler(result, type) {
       // Clear previous data
       if (this.$refs.detail) this.$refs.detail.selected = null;
 
-      if (typeof (result) === 'object') { // From MapBox
+      if (type === 0) { // From MapBox
         this.parkings.searchResult = result;
         this.scrollTo('#mobile');
-      } else { // From MobilePage
+      } else if (type === 1) { // From MobilePage
         this.proximity = result;
+      } else if (type === 2) {
+        this.filters = {
+          ...(result[0].status ? { toilet: result[0].status } : {}),
+          ...(result[1].status ? { shower: result[1].status } : {}),
+          ...(result[2].status ? { firstAidEquipment: result[2].status } : {}),
+          ...(result[3].status ? { refuseBin: result[3].status } : {}),
+        };
       }
 
       // Get parkings by proximity from backend
       EventService.getProximityParking(
         this.parkings.searchResult.coordinate,
         this.proximity,
+        this.filters,
       ).then((response) => {
         this.parkings.data = response.data;
       })
