@@ -1,8 +1,21 @@
 <template>
 <div class="content">
   <a @click="closeDetail" class="back icon"><i class="fas fa-arrow-left"></i></a>
-  <div class="row">
-    <h1>{{ parking.address }}</h1>
+  <div class="row columns is-vcentered">
+    <div class="column is-full-mobile is-8">
+      <h1>{{ parking.address }}</h1>
+    </div>
+    <div
+      class="column is-full-mobile has-text-right-tablet"
+      v-if="parking.equipments !== null"
+    >
+      <span class="title-icons has-text-dark is-size-4-mobile is-size-3-tablet">
+        <i
+        v-for="equipment in parking.equipments" :key="equipment.Type"
+        :class="equipment.icon"
+        />
+      </span>
+    </div>
   </div>
   <hr>
   <div class="row results-wrapper">
@@ -83,6 +96,10 @@ h1 {
 
 h3 {
   font-size: 18px;
+}
+
+.title-icons i {
+  margin: 0 4px;
 }
 
 .results {
