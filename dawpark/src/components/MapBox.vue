@@ -247,7 +247,6 @@ export default {
       // Remember what type of search it is
       this.type = type;
 
-      // console.log('triggered');
       if (type === 1) { // From search
         this.mapCenter = event.result.center;
 
@@ -265,13 +264,16 @@ export default {
       } else if (type === 3) { // From pinned position
         // Dont fire this event when clicking markers
         if (event.mapboxEvent.originalEvent.target.parentElement.id !== '') return;
-
+        
         this.mapCenter = [event.mapboxEvent.lngLat.lng, event.mapboxEvent.lngLat.lat];
+        
+        // Mapbox action: Fly to the new center
         event.map.flyTo({
           center: this.mapCenter,
           zoom: 10,
         });
 
+        // Emit result to parent component
         this.$emit('result', {
           coordinate: `POINT (${event.mapboxEvent.lngLat.lng} ${event.mapboxEvent.lngLat.lat})`,
           location: 'markerad position',
@@ -281,7 +283,7 @@ export default {
       // Update GEOJSON layers
       this.updateLayers();
     },
-
+    // Return meters to pixel value
     metersToPixelsAtMaxZoom(meters, latitude) {
       return ((meters / 0.075) / Math.cos((latitude * Math.PI) / 180));
     },

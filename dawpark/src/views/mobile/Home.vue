@@ -70,7 +70,7 @@ export default {
         this.scrollTo('#mobile');
       } else if (type === 1) { // From MobilePage
         this.proximity = result;
-      } else if (type === 2) {
+      } else if (type === 2) { // If filter is available
         this.filters = {
           ...(result[0].status ? { toilet: result[0].status } : {}),
           ...(result[1].status ? { shower: result[1].status } : {}),
@@ -79,7 +79,7 @@ export default {
         };
       }
 
-      // Get parkings by proximity from backend
+      // GET parkings by proximity from backend 
       EventService.getProximityParking(
         this.parkings.searchResult.coordinate,
         this.proximity,

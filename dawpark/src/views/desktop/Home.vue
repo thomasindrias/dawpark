@@ -46,11 +46,11 @@ export default {
   },
   methods: {
     searchHandler(result, type) {
-      if (type === 0) {
+      if (type === 0) { // From MapBox
         this.parkings.searchResult = result;
-      } else if (type === 1) {
+      } else if (type === 1) { // From SidePage (adjust proximity range)
         this.proximity = result;
-      } else if (type === 2) {
+      } else if (type === 2) { // From SidePage (optional filters)
         this.filters = {
           ...(result[0].status ? { toilet: result[0].status } : {}),
           ...(result[1].status ? { shower: result[1].status } : {}),
@@ -59,6 +59,7 @@ export default {
         };
       }
 
+      // GET parkings by proximity from backend 
       EventService.getProximityParking(
         this.parkings.searchResult.coordinate,
         this.proximity,
@@ -70,9 +71,11 @@ export default {
           console.log(err);
         });
     },
+    // Move to selected parking
     selected(sel) {
       if (!sel) this.$refs.map.resetToCenter();
     },
+    // Set parking info to the selected parking
     setSelection(parking) {
       this.$refs.detail.parkDetails(parking);
     },
