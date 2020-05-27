@@ -3,7 +3,14 @@
 **The application can be found [here](https://dawpark.netlify.app/).**
 
 #### Mid course screencast:
-Link to screencast: https://youtu.be/qv_utrADjsA
+* Link to screencast: https://youtu.be/qv_utrADjsA
+
+#### Project Screencast:
+* Link to screencast: [LÄGGER UPP LÄNK SNART]
+
+#### Individual oral code screencast:
+* Link to Thomas's screencast (thoin216): https://youtu.be/iGgCoAQeffc
+* Link to Filips's screencast (filkl010): [LÄNK HÄR]
 
 #### Functional specification:
 The application is meant to be used as a quality of life "tool/service" that depending on user defined filters and geo-location points out the nearest/cheapest parking space. An example can be:
