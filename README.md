@@ -6,7 +6,7 @@
 * Link to screencast: https://youtu.be/qv_utrADjsA
 
 #### Project Screencast:
-* Link to screencast: [LÄGGER UPP LÄNK SNART]
+* Link to screencast: https://youtu.be/hi4KVOVe5io
 
 #### Individual oral code screencast:
 * Link to Thomas's screencast (thoin216): https://youtu.be/iGgCoAQeffc
