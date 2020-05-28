@@ -28,6 +28,7 @@ yarn serve
 ### Filtering
 
 - [x] Search by radius
+- [x] Filter through tags
 - [ ] Filter through distance
 - [ ] Filter through free/paid
 
@@ -35,11 +36,11 @@ yarn serve
 
 - [x] Map
 - [x] Result page
-- [ ] Filters
+- [x] Filters
 
 ### Mobile version
 
 - [x] Map
 - [x] Result page
 - [x] Scroll to result
-- [ ] Filters
+- [x] Filters
