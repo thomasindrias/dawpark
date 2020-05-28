@@ -264,9 +264,9 @@ export default {
       } else if (type === 3) { // From pinned position
         // Dont fire this event when clicking markers
         if (event.mapboxEvent.originalEvent.target.parentElement.id !== '') return;
-        
+
         this.mapCenter = [event.mapboxEvent.lngLat.lng, event.mapboxEvent.lngLat.lat];
-        
+
         // Mapbox action: Fly to the new center
         event.map.flyTo({
           center: this.mapCenter,

@@ -59,7 +59,7 @@ export default {
         };
       }
 
-      // GET parkings by proximity from backend 
+      // GET parkings by proximity from backend
       EventService.getProximityParking(
         this.parkings.searchResult.coordinate,
         this.proximity,
